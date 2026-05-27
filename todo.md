@@ -9,11 +9,15 @@
 - [x] Criar testes para validar a captura de e-mails
 
 ## Exportação de E-mails
-- [x] Criar página de admin para visualizar e-mails capturados
+- [x] Criar script para exportar e-mails em XLS
 - [x] Implementar funcionalidade de exportação para XLS
-- [x] Adicionar rota de admin no App.tsx
+- [x] Remover página de admin
+- [x] Remover rota de admin do App.tsx
+- [x] Criar documentação de exportação
 
-## Próximas Etapas
-- [ ] Testar fluxo completo da aplicação
-- [ ] Validar envio de notificações
-- [ ] Verificar exportação de XLS
+## Testes
+- [x] Adicionar teste de fluxo completo
+- [x] Validar que notificações usam título "interessado"
+- [x] Testar exportação XLS com dados reais
+- [x] Implementar exportação em formato XLSX real
+- [x] Adicionar validação de conteúdo do arquivo exportado
