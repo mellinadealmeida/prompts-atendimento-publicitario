@@ -1,0 +1,10 @@
+# GitHub Pages configuration
+theme: null
+markdown: kramdown
+exclude: [node_modules, pnpm-lock.yaml, package-lock.json, _backup, dist, mentoria]
+plugins:
+  - jekyll-redirect-from
+
+# Disable Jekyll processing
+safe: false
+keep_files: [assets, prompts, __manus__]
