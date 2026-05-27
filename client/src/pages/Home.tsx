@@ -12,6 +12,7 @@ export default function Home() {
   const [email, setEmail] = useState('');
   const [showEmailForm, setShowEmailForm] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  // Force redeploy to all domains including custom domains
 
   const registerEmailMutation = trpc.assessment.registerEmail.useMutation();
 
