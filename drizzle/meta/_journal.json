@@ -1,0 +1,13 @@
+{
+  "version": "7",
+  "dialect": "mysql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "5",
+      "when": 1779852003936,
+      "tag": "0000_cooing_komodo",
+      "breakpoints": true
+    }
+  ]
+}

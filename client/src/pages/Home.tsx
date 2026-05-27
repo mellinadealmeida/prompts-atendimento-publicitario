@@ -1,33 +1,119 @@
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
 import { useLocation } from 'wouter';
-import { ArrowRight, CheckCircle2, Zap, Target, Users, TrendingUp, BookOpen } from 'lucide-react';
+import { ArrowRight, CheckCircle2, Target, Users, TrendingUp, BookOpen, Mail } from 'lucide-react';
+import { useState } from 'react';
+import { trpc } from '@/lib/trpc';
+import { toast } from 'sonner';
 
 export default function Home() {
   const [, setLocation] = useLocation();
+  const [email, setEmail] = useState('');
+  const [showEmailForm, setShowEmailForm] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const registerEmailMutation = trpc.assessment.registerEmail.useMutation();
+
+  const handleStartAssessment = () => {
+    setShowEmailForm(true);
+  };
+
+  const handleEmailSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (!email || !email.includes('@')) {
+      toast.error('Por favor, insira um e-mail válido');
+      return;
+    }
+
+    setIsSubmitting(true);
+    try {
+      const result = await registerEmailMutation.mutateAsync({ email });
+      
+      if (result.success) {
+        toast.success('E-mail registrado! Iniciando avaliação...');
+        setTimeout(() => {
+          setLocation('/assessment');
+        }, 1000);
+      } else {
+        toast.error(result.message || 'Erro ao registrar e-mail');
+      }
+    } catch (error) {
+      toast.error('Erro ao registrar e-mail. Tente novamente.');
+      console.error('Error:', error);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
       {/* Navigation */}
       <nav className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-200">
-        <div className="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-600 to-indigo-600 flex items-center justify-center">
-              <Zap className="w-6 h-6 text-white" />
-            </div>
-            <span className="font-bold text-lg text-gray-900">Mentoria Estratégica</span>
-          </div>
+        <div className="max-w-6xl mx-auto px-4 py-8 flex flex-col items-center justify-center text-center">
+          <img src="/logo-mellina.png" alt="Mellina D'Anello" className="h-20 mb-6" />
           <Button
-            onClick={() => setLocation('/assessment')}
-            className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700"
+            onClick={handleStartAssessment}
+            size="lg"
+            className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white px-8"
           >
             Começar Autoavaliação
           </Button>
         </div>
       </nav>
 
+      {/* Email Registration Modal */}
+      {showEmailForm && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <Card className="w-full max-w-md p-8 border-0 shadow-lg">
+            <div className="text-center mb-6">
+              <Mail className="w-12 h-12 text-blue-600 mx-auto mb-4" />
+              <h2 className="text-2xl font-bold text-gray-900 mb-2">
+                Vamos começar!
+              </h2>
+              <p className="text-gray-600">
+                Insira seu e-mail para continuar com a autoavaliação
+              </p>
+            </div>
+
+            <form onSubmit={handleEmailSubmit} className="space-y-4">
+              <Input
+                type="email"
+                placeholder="seu.email@exemplo.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                disabled={isSubmitting}
+                className="text-base"
+              />
+              <div className="flex gap-3">
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => {
+                    setShowEmailForm(false);
+                    setEmail('');
+                  }}
+                  disabled={isSubmitting}
+                  className="flex-1"
+                >
+                  Cancelar
+                </Button>
+                <Button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="flex-1 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white"
+                >
+                  {isSubmitting ? 'Registrando...' : 'Continuar'}
+                </Button>
+              </div>
+            </form>
+          </Card>
+        </div>
+      )}
+
       {/* Hero Section */}
-      <section className="max-w-6xl mx-auto px-4 py-20">
+      <section className="max-w-6xl mx-auto px-4 py-16">
         <div className="text-center mb-16">
           <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6 leading-tight">
             Transforme sua Carreira em
@@ -35,16 +121,9 @@ export default function Home() {
               Atendimento Publicitário
             </span>
           </h1>
-          <p className="text-xl text-gray-600 max-w-2xl mx-auto mb-8">
+          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
             Uma mentoria completa para profissionais que buscam evoluir de forma estratégica, seja para crescer onde está, encarar uma transição ou buscar uma recolocação.
           </p>
-          <Button
-            onClick={() => setLocation('/assessment')}
-            size="lg"
-            className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white px-8"
-          >
-            Iniciar Diagnóstico <ArrowRight className="w-4 h-4 ml-2" />
-          </Button>
         </div>
 
         {/* Stats */}
@@ -177,7 +256,7 @@ export default function Home() {
             Comece com o diagnóstico de competências e receba recomendações personalizadas
           </p>
           <Button
-            onClick={() => setLocation('/assessment')}
+            onClick={handleStartAssessment}
             size="lg"
             className="bg-white text-blue-600 hover:bg-gray-100 px-8"
           >
@@ -191,12 +270,7 @@ export default function Home() {
         <div className="max-w-6xl mx-auto px-4">
           <div className="grid md:grid-cols-4 gap-8 mb-8">
             <div>
-              <div className="flex items-center gap-2 mb-4">
-                <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-600 to-indigo-600 flex items-center justify-center">
-                  <Zap className="w-5 h-5 text-white" />
-                </div>
-                <span className="font-bold text-white">Mentoria Estratégica</span>
-              </div>
+              <img src="/logo-mellina.png" alt="Mellina D'Anello" className="h-10 mb-4" />
               <p className="text-sm">Transformando carreiras em atendimento publicitário</p>
             </div>
             <div>

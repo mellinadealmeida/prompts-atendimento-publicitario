@@ -232,34 +232,34 @@ export default function SelfAssessment() {
                   value={answers[question.id]?.toString() || ''}
                   onValueChange={(value) => handleAnswer(question.id, parseInt(value))}
                 >
-                  <div className="flex items-center gap-6">
+                  <div className="flex flex-wrap gap-3 sm:gap-4">
                     <div className="flex items-center gap-2">
                       <RadioGroupItem value="1" id={`${question.id}-1`} />
-                      <Label htmlFor={`${question.id}-1`} className="text-sm cursor-pointer">
+                      <Label htmlFor={`${question.id}-1`} className="text-xs sm:text-sm cursor-pointer whitespace-nowrap">
                         Não
                       </Label>
                     </div>
                     <div className="flex items-center gap-2">
                       <RadioGroupItem value="2" id={`${question.id}-2`} />
-                      <Label htmlFor={`${question.id}-2`} className="text-sm cursor-pointer">
+                      <Label htmlFor={`${question.id}-2`} className="text-xs sm:text-sm cursor-pointer whitespace-nowrap">
                         Às vezes
                       </Label>
                     </div>
                     <div className="flex items-center gap-2">
                       <RadioGroupItem value="3" id={`${question.id}-3`} />
-                      <Label htmlFor={`${question.id}-3`} className="text-sm cursor-pointer">
+                      <Label htmlFor={`${question.id}-3`} className="text-xs sm:text-sm cursor-pointer whitespace-nowrap">
                         Parcialmente
                       </Label>
                     </div>
                     <div className="flex items-center gap-2">
                       <RadioGroupItem value="4" id={`${question.id}-4`} />
-                      <Label htmlFor={`${question.id}-4`} className="text-sm cursor-pointer">
+                      <Label htmlFor={`${question.id}-4`} className="text-xs sm:text-sm cursor-pointer whitespace-nowrap">
                         Geralmente
                       </Label>
                     </div>
                     <div className="flex items-center gap-2">
                       <RadioGroupItem value="5" id={`${question.id}-5`} />
-                      <Label htmlFor={`${question.id}-5`} className="text-sm cursor-pointer">
+                      <Label htmlFor={`${question.id}-5`} className="text-xs sm:text-sm cursor-pointer whitespace-nowrap">
                         Sempre
                       </Label>
                     </div>
