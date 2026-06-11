@@ -6,13 +6,36 @@ import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import Home from "./pages/Home";
 import SelfAssessment from "./pages/SelfAssessment";
+import Biblioteca from "./pages/Biblioteca";
+import Cursos from "./pages/Cursos";
+import Mentoria from "./pages/Mentoria";
+import Videos from "./pages/Videos";
+import Agencias from "./pages/Agencias";
+import Cases from "./pages/Cases";
+import Sobre from "./pages/Sobre";
+import MinhaArea from "./pages/MinhaArea";
+import AdminDashboard from "./pages/AdminDashboard";
 
 function Router() {
-  // make sure to consider if you need authentication for certain routes
   return (
     <Switch>
+      {/* Public pages */}
       <Route path={"/"} component={Home} />
+      <Route path={"/biblioteca"} component={Biblioteca} />
+      <Route path={"/cursos"} component={Cursos} />
+      <Route path={"/mentoria"} component={Mentoria} />
+      <Route path={"/videos"} component={Videos} />
+      <Route path={"/agencias"} component={Agencias} />
+      <Route path={"/cases"} component={Cases} />
+      <Route path={"/sobre"} component={Sobre} />
       <Route path={"/assessment"} component={SelfAssessment} />
+
+      {/* Authenticated pages */}
+      <Route path={"/minha-area"} component={MinhaArea} />
+
+      {/* Admin dashboard */}
+      <Route path={"/dashboard"} component={AdminDashboard} />
+
       <Route path={"/404"} component={NotFound} />
       {/* Final fallback route */}
       <Route component={NotFound} />
