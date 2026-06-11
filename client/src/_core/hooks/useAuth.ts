@@ -34,6 +34,10 @@ export function useAuth(options?: UseAuthOptions) {
       ) {
         return;
       }
+      // In static mode, just ignore the error
+      if (error instanceof TRPCClientError) {
+        return;
+      }
       throw error;
     } finally {
       utils.auth.me.setData(undefined, null);
@@ -66,6 +70,8 @@ export function useAuth(options?: UseAuthOptions) {
     if (state.user) return;
     if (typeof window === "undefined") return;
     if (window.location.pathname === redirectPath) return;
+    // Don't redirect if OAuth is not configured (static deployment)
+    if (redirectPath === '#login-unavailable') return;
 
     window.location.href = redirectPath
   }, [
