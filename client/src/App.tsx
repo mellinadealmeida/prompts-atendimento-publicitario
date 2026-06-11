@@ -15,6 +15,7 @@ import Cases from "./pages/Cases";
 import Sobre from "./pages/Sobre";
 import MinhaArea from "./pages/MinhaArea";
 import AdminDashboard from "./pages/AdminDashboard";
+import CursoDetalhe from "./pages/CursoDetalhe";
 
 function Router() {
   return (
@@ -23,6 +24,7 @@ function Router() {
       <Route path={"/"} component={Home} />
       <Route path={"/biblioteca"} component={Biblioteca} />
       <Route path={"/cursos"} component={Cursos} />
+      <Route path={"/cursos/:slug"} component={CursoDetalhe} />
       <Route path={"/mentoria"} component={Mentoria} />
       <Route path={"/videos"} component={Videos} />
       <Route path={"/agencias"} component={Agencias} />
